@@ -32,4 +32,5 @@
 - Canvas API
 
 ## 📂 Структура
+
 https://belka-001.github.io/shashki-game-/index.html
