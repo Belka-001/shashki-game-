@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR-код - Шашки</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: radial-gradient(ellipse at center, #1a0f0a 0%, #0d0805 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: linear-gradient(145deg, #2c1810, #1a0f0a);
+            border-radius: 40px;
+            padding: 40px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+            border: 2px solid rgba(255,215,0,0.15);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ffd700, #ffed4a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        .qr-container {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        #qrcode {
+            display: inline-block;
+        }
+        #qrcode img {
+            display: block;
+            max-width: 250px;
+            height: auto;
+        }
+        .url-display {
+            background: rgba(255,255,255,0.05);
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            word-break: break-all;
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a0f0a;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(247,151,30,0.4);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.12);
+            box-shadow: none;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .back-link {
+            color: rgba(255,215,0,0.5);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #ffd700;
+        }
+        @media (max-width: 480px) {
+            .container { padding: 25px; }
+            .title { font-size: 22px; }
+            #qrcode img { max-width: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="title">📱 QR-код</h1>
+    <p class="subtitle">Сканируйте для перехода на сайт</p>
+    
+    <div class="qr-container">
+        <div id="qrcode"></div>
+    </div>
+
+    <div class="url-display" id="urlDisplay">https://shashki-game.ru</div>
+
+    <div class="buttons">
+        <button class="btn" onclick="downloadQR()">💾 Скачать QR-код</button>
+        <a href="index.html" class="btn btn-secondary">🎮 Играть в шашки</a>
+    </div>
+
+    <a href="index.html" class="back-link">← Вернуться к игре</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+<script>
+    function generateQR() {
+        const container = document.getElementById('qrcode');
+        container.innerHTML = '';
+        
+        new QRCode(container, {
+            text: 'https://shashki-game.ru',
+            width: 250,
+            height: 250,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+
+    function downloadQR() {
+        const canvas = document.querySelector('#qrcode canvas');
+        if (!canvas) {
+            alert('Подождите, QR-код создаётся...');
+            return;
+        }
+        
+        const link = document.createElement('a');
+        link.download = 'qr-code-shashki.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }
+
+    generateQR();
+</script>
+</body>
+</html>
