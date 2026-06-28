@@ -3,168 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR-код - Шашки</title>
+    <title>Генератор QR-кода</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: radial-gradient(ellipse at center, #1a0f0a 0%, #0d0805 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
+
         .container {
-            background: linear-gradient(145deg, #2c1810, #1a0f0a);
-            border-radius: 40px;
+            background: #2a2a2a;
+            border-radius: 24px;
             padding: 40px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.9);
-            border: 2px solid rgba(255,215,0,0.15);
             max-width: 500px;
             width: 100%;
             text-align: center;
+            border: 1px solid #3a3a3a;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         }
-        .title {
+
+        h1 {
+            color: #fff;
             font-size: 28px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #ffd700, #ffed4a);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
         }
-        .subtitle {
-            color: rgba(255,255,255,0.5);
-            font-size: 16px;
-            margin-bottom: 30px;
-        }
-        .qr-container {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-        #qrcode {
-            display: inline-block;
-        }
-        #qrcode img {
-            display: block;
-            max-width: 250px;
-            height: auto;
-        }
-        .url-display {
-            background: rgba(255,255,255,0.05);
-            padding: 12px 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            word-break: break-all;
+
+        p {
+            color: #888;
             font-size: 14px;
-            color: rgba(255,255,255,0.6);
-            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 25px;
         }
-        .btn {
-            padding: 12px 30px;
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 16px;
+            min-height: 250px;
+            min-width: 250px;
+            max-width: 300px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .url-box {
+            background: #222;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            margin: 15px 0;
+            word-break: break-all;
+            color: #888;
+            font-size: 13px;
+        }
+
+        .url-box a {
+            color: #e0c080;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .url-box a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            padding: 14px 30px;
             border: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            color: #1a0f0a;
-            text-decoration: none;
-            display: inline-block;
+            background: #e0c080;
+            color: #1a1a1a;
+            margin: 5px;
         }
-        .btn:hover {
+
+        button:hover {
+            background: #e8d090;
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(247,151,30,0.4);
+            box-shadow: 0 4px 20px rgba(224, 192, 128, 0.3);
         }
-        .btn-secondary {
-            background: rgba(255,255,255,0.05);
+
+        button.secondary {
+            background: #3a3a3a;
+            color: #ccc;
+        }
+
+        button.secondary:hover {
+            background: #444;
             color: #fff;
-            border: 1px solid rgba(255,255,255,0.1);
         }
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.12);
-            box-shadow: none;
+
+        .copy-success {
+            color: #6aaa6a;
+            font-size: 13px;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        .buttons {
+
+        .copy-success.show {
+            opacity: 1;
+        }
+
+        .input-group {
             display: flex;
             gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 20px;
+            margin: 15px 0;
         }
-        .back-link {
-            color: rgba(255,215,0,0.5);
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
+
+        .input-group input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            background: #222;
+            color: #fff;
             font-size: 14px;
-            transition: color 0.3s;
+            outline: none;
+            transition: border-color 0.3s ease;
         }
-        .back-link:hover {
-            color: #ffd700;
+
+        .input-group input:focus {
+            border-color: #e0c080;
         }
-        @media (max-width: 480px) {
-            .container { padding: 25px; }
-            .title { font-size: 22px; }
-            #qrcode img { max-width: 200px; }
+
+        .input-group input::placeholder {
+            color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 24px;
+            }
+            #qrcode {
+                min-height: 200px;
+                min-width: 200px;
+                padding: 20px;
+            }
+            .input-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>📱 QR-код</h1>
+        <p>Ссылка для входа в игру</p>
 
-<div class="container">
-    <h1 class="title">📱 QR-код</h1>
-    <p class="subtitle">Сканируйте для перехода на сайт</p>
-    
-    <div class="qr-container">
+        <!-- Поле для ввода ссылки -->
+        <div class="input-group">
+            <input type="text" id="urlInput" placeholder="Введите ссылку..." value="https://ваш-сайт.com">
+            <button onclick="generateQR()">Сгенерировать</button>
+        </div>
+
+        <!-- QR-код -->
         <div id="qrcode"></div>
+
+        <!-- Ссылка -->
+        <div class="url-box">
+            <a href="#" id="qrLink" target="_blank">https://ваш-сайт.com</a>
+        </div>
+
+        <!-- Кнопки -->
+        <div>
+            <button onclick="copyUrl()">📋 Копировать ссылку</button>
+            <button onclick="downloadQR()" class="secondary">💾 Скачать QR</button>
+        </div>
+
+        <div class="copy-success" id="copySuccess">✅ Ссылка скопирована!</div>
     </div>
 
-    <div class="url-display" id="urlDisplay">https://shashki-game.ru</div>
+    <!-- Подключаем библиотеку QRCode -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js">
+    </script>
 
-    <div class="buttons">
-        <button class="btn" onclick="downloadQR()">💾 Скачать QR-код</button>
-        <a href="index.html" class="btn btn-secondary">🎮 Играть в шашки</a>
-    </div>
+    <script>
+        let qrCodeInstance = null;
 
-    <a href="index.html" class="back-link">← Вернуться к игре</a>
-</div>
+        // Генерация QR-кода
+        function generateQR() {
+            const urlInput = document.getElementById('urlInput');
+            const url = urlInput.value.trim() || 'https://ваш-сайт.com';
+            const qrContainer = document.getElementById('qrcode');
 
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+            // Очищаем контейнер
+            qrContainer.innerHTML = '';
 
-<script>
-    function generateQR() {
-        const container = document.getElementById('qrcode');
-        container.innerHTML = '';
-        
-        new QRCode(container, {
-            text: 'https://shashki-game.ru',
-            width: 250,
-            height: 250,
-            colorDark: '#000000',
-            colorLight: '#ffffff',
-            correctLevel: QRCode.CorrectLevel.H
-        });
-    }
+            // Создаем QR-код
+            qrCodeInstance = new QRCode(qrContainer, {
+                text: url,
+                width: 250,
+                height: 250,
+                colorDark: "#1a1a1a",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
 
-    function downloadQR() {
-        const canvas = document.querySelector('#qrcode canvas');
-        if (!canvas) {
-            alert('Подождите, QR-код создаётся...');
-            return;
+            // Обновляем ссылку
+            document.getElementById('qrLink').href = url;
+            document.getElementById('qrLink').textContent = url;
+
+            // Скрываем сообщение о копировании
+            document.getElementById('copySuccess').classList.remove('show');
         }
-        
-        const link = document.createElement('a');
-        link.download = 'qr-code-shashki.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-    }
 
-    generateQR();
-</script>
+        // Копирование ссылки
+        function copyUrl() {
+            const url = document.getElementById('urlInput').value || 'https://ваш-сайт.com';
+
+            navigator.clipboard.writeText(url).then(() => {
+                showCopySuccess();
+            }).catch(() => {
+                // Fallback
+                const input = document.createElement('input');
+                input.value = url;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                showCopySuccess();
+            });
+        }
+
+        function showCopySuccess() {
+            const el = document.getElementById('copySuccess');
+            el.classList.add('show');
+            setTimeout(() => {
+                el.classList.remove('show');
+            }, 2000);
+        }
+
+        // Скачивание QR-кода
+        function downloadQR() {
+            const qrContainer = document.getElementById('qrcode');
+            const canvas = qrContainer.querySelector('canvas');
+
+            if (canvas) {
+                // Создаем ссылку для скачивания
+                const link = document.createElement('a');
+                link.download = 'qr-code.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            } else {
+                alert('Сначала сгенерируйте QR-код!');
+            }
+        }
+
+        // Генерируем при загрузке
+        window.onload = function() {
+            generateQR();
+        };
+    </script>
 </body>
 </html>
